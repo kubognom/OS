@@ -127,7 +127,7 @@ while A != 4:
         print("XML deleted")
         A = 4
 
-dirname = '/Users/Nikta/PycharmProjects/pythonProject'
+dirname = '/Users/Nikta/PycharmProjects/pythonProject/PR1'
 files = os.listdir(dirname)
 print(files)
 import zipfile
