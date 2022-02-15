@@ -2,6 +2,8 @@ import json
 import os
 import psutil
 
+
+
 d = psutil.disk_partitions()
 i = -1
 for disk in psutil.disk_partitions():
@@ -124,3 +126,21 @@ while A != 4:
         os.remove("filename.xml")
         print("XML deleted")
         A = 4
+
+dirname = '/Users/Nikta/PycharmProjects/pythonProject'
+files = os.listdir(dirname)
+print(files)
+import zipfile
+archive = zipfile.ZipFile('Archive.zip', mode='w')
+A = int(input('какой из файлов добавить в архив?(номер) >>  '))
+archive.write(files[A-1])
+os.remove(files[A-1])
+print('файлы добавлены')
+archive.close()
+archive = zipfile.ZipFile('Archive.zip', 'r')
+archive.extractall('.')
+print('Распаковано')
+for ar in archive.infolist():
+    print(ar.filename, '|Дата создания: ', ar.date_time[0],ar.date_time[1],ar.date_time[2],'|Размер: ', ar.file_size)
+archive.close()
+os.remove("Archive.zip")
