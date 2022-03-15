@@ -10,20 +10,6 @@ from datetime import datetime
 hsh = '1115dd800feaacefdf481f1f9070374a2a81e27880f187396db67958b207cbad', '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b', '74e1bb62f8dabb8125a58852b63bdf6eaef667cb56ac7f7cdba6d7305c50a22f'
 
 
-def brute_force1(mask, hsh, alphabet=string.ascii_letters + string.digits, verbose=False):
-    pwd_pat = mask.replace('{', '{{').replace('}', '}}').replace('*', '{}')
-    N = mask.count('*')
-    i = 0
-    for chars in itertools.product(alphabet, repeat=N):
-        if verbose:
-            i += 1
-            if i % 10000 == 0:
-                print('Итераций >>> {}'.format(i))
-        if hsh == hashlib.sha256(pwd_pat.format(*chars).encode()).hexdigest():
-            print('паролль = ', pwd_pat.format(*chars))
-            return pwd_pat.format(*chars)
-    return None
-
 
 
 
@@ -58,16 +44,12 @@ def brute_force2(mask, target_sha256, n_cutoff=4):
 if __name__ == '__main__':
     print('ХЭШ:\n1 - ',hsh[0],'\n2 - ',hsh[1],'\n3 - ',hsh[2])
     A = int(input('>>> '))
-    B = int(input('1- однопоточный 2- многопотчный\n>>  '))
-    if B == 1:
-        start_time = datetime.now()
-        brute_force1('*****', hsh[A-1], verbose=True)
-        print('Время обработки = ', datetime.now() - start_time)
-    elif B==2:
-        start_time = datetime.now()
-        passw_bytes = brute_force2(b'*****', binascii.unhexlify(hsh[A-1]))
-        print('паролль = ',passw_bytes.decode())
-        print('Время обработки = ', datetime.now() - start_time)
+    n = int(input('Введите кол-во потоков\n>>  '))
+
+    start_time = datetime.now()
+    passw_bytes = brute_force2(b'*****', binascii.unhexlify(hsh[A - 1]), n)
+    print('паролль = ', passw_bytes.decode())
+    print('Время обработки = ', datetime.now() - start_time)
 
 
 
