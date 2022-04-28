@@ -2,7 +2,9 @@ import threading
 import time
 import random
 
-C11 = False
+Pause = False
+stop = False
+break_ = False
 
 
 class C1(threading.Thread):
@@ -14,17 +16,27 @@ class C1(threading.Thread):
         self.state = threading.Condition()
 
     def run(self):
-        global C11
+        global Pause
+        global stop
+        global break_
         self.resume()
         while True:
             with self.state:
                 if self.paused:
                     self.state.wait()  # Block execution until notified.
             print("C1 осталось 4с")
+            AA = int(input("1,2>>"))
+
             time.sleep(4)
+            if AA == 1:
+                stop = True
+                break
+            if AA == 2:
+                break_ = True
+
             print("C1 2c")
             time.sleep(2)
-            C11 = True
+            Pause = True
             time.sleep(.1)
             self.iterations += 1
 
@@ -65,11 +77,15 @@ class C3(threading.Thread):
 
 def win_init():
     thread_list = []
-    global C11
+    pausedthread = []
+    pause_list = []
+    global Pause
+    global stop
+    global  break_
     M=1
     while M!=0:
 
-        thread_viboor = int(input("1>> 2>> 3>> 4>>> 5-start "))
+        thread_viboor = int(input("1>> 2>> 3>> 4>>> 6 >>  5-start "))
 
 
 
@@ -82,26 +98,50 @@ def win_init():
         if thread_viboor ==4:
             A = thread_list.pop(int(input(">>"))-1)
             thread_list.append(A)
+        if thread_viboor == 6:
+            P = pause_list.pop(0)
+            thread_list.append(P)
         if thread_viboor == 5:
 
             B = thread_list.pop(0)
+            for i in range(len(pausedthread)):
+                if B == pausedthread[i]:
+                    Pause = True
+                else:
+                    Pause = False
             print(B, " running")
-            if C11 == False:
+            if Pause == False:
                 B.start()
             B.resume()
+            Pause = False
 
 
             while True:
-                if C11 == True:
+                if break_ == True:
+                    pause_list.append(B)
+                    B.pause()
+                    print("..")
+                    break_ = False
+                    break
+
+                if Pause == True:
 
                     B.pause()
                     thread_list.append(B)
+                    pausedthread.append(B)
                     print("..")
+                    Pause = False
 
+                    break
+                if stop == True:
+                    B.join()
+                    print("..")
+                    stop = False
                     break
 
 
-        print(thread_list)
+        print('potoki',thread_list)
+        print('pause ',pause_list)
 
 
 
