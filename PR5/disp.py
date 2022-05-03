@@ -25,7 +25,7 @@ class C1(threading.Thread):
                 if self.paused:
                     self.state.wait()  # Block execution until notified.
             print("C1 осталось 4с")
-            AA = int(input("1,2>>"))
+            AA = int(input("1-del,2-pause>>"))
 
             time.sleep(4)
             if AA == 1:
