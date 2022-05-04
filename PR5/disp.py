@@ -6,6 +6,7 @@ Pause = False
 stop = False
 break_ = False
 pot_off = False
+now = 0
 
 
 class C1(threading.Thread):
@@ -21,8 +22,9 @@ class C1(threading.Thread):
         global stop
         global break_
         global pot_off
+        global now
         self.resume()
-        now = time.time()
+
         print(now)
         AA =1
 
@@ -102,7 +104,7 @@ class potok(threading.Thread):
 
         while True and pot_off==False:
 
-            pott =  input()
+            pott =  str(input())
             if pott == 'q':
                 break_ = True
                 break
@@ -120,13 +122,14 @@ def win_init():
     global stop
     global  break_
     global pot_off
+    global now
 
     M=1
     while M!=0:
         #event = str(input("input"))
 
 
-        thread_viboor = int(input("1>> 2>> 3>> 4>>> 6 >>  5-start "))
+        thread_viboor = int(input("ADD 1 module>> |ADD 2nd>> |ADD 3rd>> |Replace 4>>> |Wait->Start 6 >> | 5-start >> "))
 
 
 
@@ -137,13 +140,15 @@ def win_init():
         if thread_viboor == 3:
             thread_list.append(C3())
         if thread_viboor ==4:
-            A = thread_list.pop(int(input(">>"))-1)
+            A = thread_list.pop(int(input("Kakoy potok B konez?>> "))-1)
             thread_list.append(A)
         if thread_viboor == 6:
             P = pause_list.pop(0)
             thread_list.append(P)
+            pausedthread.append(P)
         if thread_viboor == 5:
-            pot_off == False
+            now = time.time()
+            pot_off = False
             P = potok()
             P.start()
 
