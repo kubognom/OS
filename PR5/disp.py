@@ -26,17 +26,15 @@ class C1(threading.Thread):
         self.resume()
 
         print(now)
-        AA =1
+        AA = 1
 
         while True:
             with self.state:
                 if self.paused:
                     self.state.wait()  # Block execution until notified.
 
-            AA +=  random.randint(1,30)
+            AA += random.randint(1, 30)
             print(AA)
-
-
 
             if AA >= 200:
                 stop = True
@@ -53,8 +51,6 @@ class C1(threading.Thread):
                 pot_off = True
 
                 Pause = True
-
-
 
             time.sleep(1)
             self.iterations += 1
@@ -78,9 +74,10 @@ class C2(threading.Thread):
         while True:
             print("C2")
 
-
     def off_C(self):
         self._event.set()
+
+
 class C3(threading.Thread):
     def __init__(self, *args, **kwargs):
         super(C3, self).__init__(*args, **kwargs)
@@ -90,9 +87,10 @@ class C3(threading.Thread):
         while True:
             print("C2")
 
-
     def off_C(self):
         self._event.set()
+
+
 class potok(threading.Thread):
     def __init__(self, *args, **kwargs):
         super(potok, self).__init__(*args, **kwargs)
@@ -102,36 +100,32 @@ class potok(threading.Thread):
         global break_
         global pot_off
 
-        while True and pot_off==False:
+        while True and pot_off == False:
 
-            pott =  str(input())
+            pott = str(input())
             if pott == 'q':
                 break_ = True
                 break
 
-
-
-
     def off_C(self):
         self._event.set()
+
+
 def win_init():
     thread_list = []
     pausedthread = []
     pause_list = []
     global Pause
     global stop
-    global  break_
+    global break_
     global pot_off
     global now
 
-    M=1
-    while M!=0:
-        #event = str(input("input"))
-
+    M = 1
+    while M != 0:
+        # event = str(input("input"))
 
         thread_viboor = int(input("ADD 1 module>> |ADD 2nd>> |ADD 3rd>> |Replace 4>>> |Wait->Start 6 >> | 5-start >> "))
-
-
 
         if thread_viboor == 1:
             thread_list.append(C1())
@@ -139,8 +133,8 @@ def win_init():
             thread_list.append(C2())
         if thread_viboor == 3:
             thread_list.append(C3())
-        if thread_viboor ==4:
-            A = thread_list.pop(int(input("Kakoy potok B konez?>> "))-1)
+        if thread_viboor == 4:
+            A = thread_list.pop(int(input("Kakoy potok B konez?>> ")) - 1)
             thread_list.append(A)
         if thread_viboor == 6:
             P = pause_list.pop(0)
@@ -164,7 +158,6 @@ def win_init():
             B.resume()
             Pause = False
 
-
             while True:
                 if break_ == True:
                     pause_list.append(B)
@@ -175,7 +168,6 @@ def win_init():
                     break
 
                 if Pause == True:
-
                     B.pause()
                     thread_list.append(B)
                     pausedthread.append(B)
@@ -191,17 +183,9 @@ def win_init():
                     stop = False
                     break
 
-
         pot_off == True
-        print('potoki',thread_list)
-        print('pause ',pause_list)
-
-
-
-
-
-
-
+        print('potoki', thread_list)
+        print('pause ', pause_list)
 
 
 if __name__ == '__main__':
