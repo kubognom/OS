@@ -5,6 +5,7 @@ import random
 Pause = False
 stop = False
 break_ = False
+pot_off = False
 
 
 class C1(threading.Thread):
@@ -19,25 +20,41 @@ class C1(threading.Thread):
         global Pause
         global stop
         global break_
+        global pot_off
         self.resume()
+        now = time.time()
+        print(now)
+        AA =1
+
         while True:
             with self.state:
                 if self.paused:
                     self.state.wait()  # Block execution until notified.
-            print("C1 осталось 4с")
-            AA = int(input("1,2>>"))
 
-            time.sleep(4)
-            if AA == 1:
+            AA +=  random.randint(1,30)
+            print(AA)
+
+
+
+            if AA >= 200:
                 stop = True
+                print('stop')
+                pot_off = True
                 break
-            if AA == 2:
-                break_ = True
+            if AA <= 0 and now + 20 > time.time():
+                print("q")
+                pot_off = True
 
-            print("C1 2c")
-            time.sleep(2)
-            Pause = True
-            time.sleep(.1)
+                break_ = True
+            if now + 10 < time.time():
+                print("pause")
+                pot_off = True
+
+                Pause = True
+
+
+
+            time.sleep(1)
             self.iterations += 1
 
     def pause(self):
@@ -74,7 +91,27 @@ class C3(threading.Thread):
 
     def off_C(self):
         self._event.set()
+class potok(threading.Thread):
+    def __init__(self, *args, **kwargs):
+        super(potok, self).__init__(*args, **kwargs)
+        self._event = threading.Event()
 
+    def run(self):
+        global break_
+        global pot_off
+
+        while True and pot_off==False:
+
+            pott =  input()
+            if pott == 'q':
+                break_ = True
+                break
+
+
+
+
+    def off_C(self):
+        self._event.set()
 def win_init():
     thread_list = []
     pausedthread = []
@@ -82,8 +119,12 @@ def win_init():
     global Pause
     global stop
     global  break_
+    global pot_off
+
     M=1
     while M!=0:
+        #event = str(input("input"))
+
 
         thread_viboor = int(input("1>> 2>> 3>> 4>>> 6 >>  5-start "))
 
@@ -102,6 +143,9 @@ def win_init():
             P = pause_list.pop(0)
             thread_list.append(P)
         if thread_viboor == 5:
+            pot_off == False
+            P = potok()
+            P.start()
 
             B = thread_list.pop(0)
             for i in range(len(pausedthread)):
@@ -121,6 +165,7 @@ def win_init():
                     pause_list.append(B)
                     B.pause()
                     print("..")
+                    P.join()
                     break_ = False
                     break
 
@@ -130,46 +175,26 @@ def win_init():
                     thread_list.append(B)
                     pausedthread.append(B)
                     print("..")
+                    P.join()
                     Pause = False
 
                     break
                 if stop == True:
                     B.join()
                     print("..")
+                    P.join()
                     stop = False
                     break
 
 
+        pot_off == True
         print('potoki',thread_list)
         print('pause ',pause_list)
 
 
 
-    while True:
-
-        event = str(input("input"))
-
-        if event == 'start' and producer_count != 0 and consumer_count != 0:
-            for i in range(len(thread_list)):
-                thread_list[i].start()
-
-            producer_count = 0
-            consumer_count = 0
 
 
-        if event == 'q':
-            print("Осталось:",q)
-            for i in range(len(producer_list)):
-                producer_list[i].off_P()
-                producer_list[i].join()
-            producer_list = []
-            for i in range(len(consumer_list)):
-                consumer_list[i].off_C()
-                consumer_list[i].join()
-            consumer_list = []
-            event = ''
-        if event == 'stop':
-            break
 
 
 
