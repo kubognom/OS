@@ -12,6 +12,7 @@ while td_data:
 print(table)
 file = []
 colls = []
+size = []
 a = 0
 import PySimpleGUI as sg
 import os
@@ -20,14 +21,16 @@ while True:
     if vib == 1:
         filename = sg.popup_get_file('Добавьте файлы в очередь')
         a = a + 1
-        colls.append('' + str(a) + ' ')
+        colls.append('%6s' % str(a) + ' ')
         name = os.path.basename(filename)
-        size = os.stat(filename).st_size
-        print(size)
+        sizef = os.stat(filename).st_size
+        size.append('%6s' % sizef + ' ')
+
         index = name.index('.')
-        file.append(name[:index])
+        file.append('%6s' % name[:index]+ ' ')
         print(colls)
         print(file)
+        print(size)
     if vib== 3:
         vib2 = int(input('>> '))
         aa = colls.pop(vib2-1)
