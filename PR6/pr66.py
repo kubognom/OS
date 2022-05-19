@@ -1,4 +1,6 @@
-from prettytable import PrettyTable  # Импортируем установленный модуль.
+from prettytable import PrettyTable
+import PySimpleGUI as sg
+import os
 th = ['раздел ', 'его размер, байт', 'свободен']
 td = ['1',          '16000',                'yes',
       '2',          '23000',               'yes',
@@ -6,21 +8,22 @@ td = ['1',          '16000',                'yes',
       '4',          '40000',              'yes',
       '5',          '30000',              'yes',
       '6',          '50000',              'yes']
-columns = len(th)  # Подсчитаем кол-во столбцов на будущее.
-table = PrettyTable(th)  # Определяем таблицу.
-td_data = td[:]
-while td_data:
-    table.add_row(td_data[:columns])
-    td_data = td_data[columns:]
-print(table)
+
 file = []
 colls = []
 size = []
 a = 0
-import PySimpleGUI as sg
-import os
+
 while True:
-    vib = int(input('  1 - add |      2 - start   | 3 - replace  >>  '))
+    columns = len(th)  # Подсчитаем кол-во столбцов на будущее.
+    table = PrettyTable(th)  # Определяем таблицу.
+    td_data = td[:]
+    while td_data:
+        table.add_row(td_data[:columns])
+        td_data = td_data[columns:]
+    print(table)
+
+    vib = int(input('  1 - add |      2 - start   | 3 - replace | 4 - выполнить | >>  '))
     if vib == 1:
         filename = sg.popup_get_file('Добавьте файлы в очередь')
         a = a + 1
@@ -38,6 +41,19 @@ while True:
         colls.append(aa)
         bb = file.pop(vib2-1)
         file.append(bb)
+        vib2 = 0
+    if vib== 4:
+        vib2 = int(input('>> '))
+        if vib2 !=1:
+            if td[vib2+(vib2*2-1)] != 'yes':
+                td[vib2 + (vib2 * 2 - 1)] = 'yes'
+            else:
+                print('раздел свободен')
+        else:
+            if td[2] != 'yes':
+                td[2] = 'yes'
+            else:
+                print('раздел свободен')
 
     if vib ==2:
         i = 0
@@ -56,18 +72,13 @@ while True:
                         schet = prov3
                         scheti = i+2
             i += 3
-        # print(td[scheti])
+
         td[scheti] = name2
-        columns = len(th)  # Подсчитаем кол-во столбцов на будущее.
-        table = PrettyTable(th)  # Определяем таблицу.
-        td_data = td[:]
-        while td_data:
-            table.add_row(td_data[:columns])
-            td_data = td_data[columns:]
-        print(table)
+
     print(colls)
     print(file)
     print(size)
+
 
 
 
