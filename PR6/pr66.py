@@ -26,14 +26,19 @@ while True:
     vib = int(input('  1 - add |      2 - start   | 3 - replace | 4 - выполнить | >>  '))
     if vib == 1:
         filename = sg.popup_get_file('Добавьте файлы в очередь')
-        a = a + 1
-        colls.append('%6s' % str(a) + ' ')
-        name = os.path.basename(filename)
         sizef = os.stat(filename).st_size
-        size.append('%6s' % sizef + ' ')
+        if sizef > 50000:
+            print('Невозможно добавить: размер задачи больше максимального размера раздела')
+        else:
+            a = a + 1
+            colls.append('%6s' % str(a) + ' ')
+            name = os.path.basename(filename)
 
-        index = name.index('.')
-        file.append('%6s' % name[:index]+ ' ')
+            size.append('%6s' % sizef + ' ')
+
+            index = name.index('.')
+            file.append('%6s' % name[:index] + ' ')
+
 
     if vib== 3:
         vib2 = int(input('>> '))
@@ -43,7 +48,7 @@ while True:
         file.append(bb)
         vib2 = 0
     if vib== 4:
-        vib2 = int(input('>> '))
+        vib2 = int(input('Номер задачи >> '))
         if vib2 !=1:
             if td[vib2+(vib2*2-1)] != 'yes':
                 td[vib2 + (vib2 * 2 - 1)] = 'yes'
@@ -56,12 +61,14 @@ while True:
                 print('раздел свободен')
 
     if vib ==2:
+        print('running :\n', colls[0], '\n', file[0], '\n', size[0])
         i = 0
         schet= 65000
         scheti =0
         prov2 = size.pop(0)
         colls.pop(0)
         name2 = file.pop(0)
+
         while i<len(td):
             prov3 = int(td[i+1])
 
@@ -75,9 +82,9 @@ while True:
 
         td[scheti] = name2
 
-    print(colls)
-    print(file)
-    print(size)
+    print('N    ' ,colls)
+    print('name ',file)
+    print('size ',size)
 
 
 
