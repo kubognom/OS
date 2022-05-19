@@ -3,11 +3,10 @@ import PySimpleGUI as sg
 import os
 th = ['раздел ', 'его размер, байт', 'свободен']
 td = ['1',          '16000',                'yes',
-      '2',          '23000',               'yes',
-      '3',          '15000',              'yes',
-      '4',          '40000',              'yes',
-      '5',          '30000',              'yes',
-      '6',          '50000',              'yes']
+      '2',          '5000',               'yes',
+      '3',          '6000',              'yes',
+      '4',          '10000',              'yes',
+      '5',          '28000',              'yes']
 
 file = []
 colls = []
@@ -27,7 +26,7 @@ while True:
     if vib == 1:
         filename = sg.popup_get_file('Добавьте файлы в очередь')
         sizef = os.stat(filename).st_size
-        if sizef > 50000:
+        if sizef > 28000:
             print('Невозможно добавить: размер задачи больше максимального размера раздела')
         else:
             a = a + 1
@@ -46,6 +45,8 @@ while True:
         colls.append(aa)
         bb = file.pop(vib2-1)
         file.append(bb)
+        cc = size.pop(vib2-1)
+        size.append(cc)
         vib2 = 0
     if vib== 4:
         vib2 = int(input('Номер задачи >> '))
@@ -63,10 +64,11 @@ while True:
     if vib ==2:
         print('running :\n', colls[0], '\n', file[0], '\n', size[0])
         i = 0
+        triger = True
         schet= 65000
         scheti =0
         prov2 = size.pop(0)
-        colls.pop(0)
+        colls2 = colls.pop(0)
         name2 = file.pop(0)
 
         while i<len(td):
@@ -75,12 +77,17 @@ while True:
             if prov3 > int(prov2):
                 if prov3 < schet:
                     if td[i+2] == 'yes':
-
+                        triger= False
                         schet = prov3
                         scheti = i+2
             i += 3
-
-        td[scheti] = name2
+        if triger == False:
+            td[scheti] = name2
+        else:
+            print('сейчас все разделы заняты, задача ставится в конец')
+            size.append(prov2)
+            colls.append(colls2)
+            file.append(name2)
 
     print('N    ' ,colls)
     print('name ',file)
