@@ -84,7 +84,7 @@ while True:
         if triger == False:
             td[scheti] = name2
         else:
-            print('сейчас все разделы заняты, задача ставится в конец')
+            print('сейчас все подходящие разделы заняты, задача ставится в конец очереди')
             size.append(prov2)
             colls.append(colls2)
             file.append(name2)
