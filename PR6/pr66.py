@@ -41,20 +41,34 @@ while True:
 
     if vib ==2:
         i = 0
+        schet= 65000
+        scheti =0
         prov2 = size.pop(0)
         colls.pop(0)
-        file.pop(0)
+        name2 = file.pop(0)
         while i<len(td):
             prov3 = int(td[i+1])
-            i+=3
-            print(prov2, ' < ', prov3)
+
             if prov3 > int(prov2):
-                print('yes')
-            else:
-                print('no')
+                if prov3 < schet:
+                    if td[i+2] == 'yes':
+
+                        schet = prov3
+                        scheti = i+2
+            i += 3
+        # print(td[scheti])
+        td[scheti] = name2
+        columns = len(th)  # Подсчитаем кол-во столбцов на будущее.
+        table = PrettyTable(th)  # Определяем таблицу.
+        td_data = td[:]
+        while td_data:
+            table.add_row(td_data[:columns])
+            td_data = td_data[columns:]
+        print(table)
     print(colls)
     print(file)
     print(size)
+
 
 
 
